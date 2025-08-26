@@ -1,6 +1,7 @@
 
 """ 
 This script compresses traffic log export from Palo Alto firewall by identifying unique flows and aggregating byte and connection counts.
+The flows are matched on source/destination IP, source user, application and destination port.
 The bytes column sums all traffic from deduplicated entries. The count column indicates how many entries were deduplicated into one.
 
 To export full logs from Panorama:
@@ -40,6 +41,7 @@ def process_csv(source_csv, destination_csv):
             if (dest_row["Source address"] == row["Source address"] and
                 dest_row["Destination address"] == row["Destination address"] and
                 dest_row["Source User"] == row["Source User"] and
+                dest_row["Application"] == row["Application"] and
                 dest_row["Destination Port"] == row["Destination Port"]):
                 # If a match is found, update the Bytes and Count columns
                 dest_row["Bytes"] = int(dest_row["Bytes"]) + int(row["Bytes"])
